@@ -1,0 +1,39 @@
+<div class="qdm-opt">
+  <div class="qdm-opt-scroll">
+    <label class="qdm-field">Próxima masmorra
+      <select name="nextDungeon">{{#each dungeons}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+      <span class="qdm-hint">As missões novas apontam para ela: CD 15 + nível, câmaras e tabela de encontros da Caça (p. 33).</span>
+    </label>
+    <label class="qdm-check">
+      <input type="checkbox" name="revealGod" {{#if revealGod}}checked{{/if}}>
+      <span>Mostrar o deus da masmorra nos cartazes
+        <span class="qdm-hint">A ordem das masmorras é segredo (p. 46). Desligado, os cartazes dizem só "a próxima masmorra".</span></span>
+    </label>
+    <div class="qdm-grid-2">
+      <label class="qdm-field">Personagens jogadores
+        <input type="number" name="partySize" min="0" max="12" value="{{partySize}}">
+        <span class="qdm-hint">0 = contar sozinho ({{detected}} agora). É o limite de missões aceitas (p. 33).</span>
+      </label>
+      <label class="qdm-field">Missões cumpridas
+        <input type="number" name="completed" min="0" max="999" value="{{completed}}">
+        <span class="qdm-hint">Sobe sozinho ao marcar uma missão como cumprida.</span>
+      </label>
+    </div>
+
+    <h3 class="qdm-opt-title">Moradores fora de jogo</h3>
+    <p class="qdm-hint">Marcados não assinam missões novas: quem morreu numa escolta (p. 33), Tanit depois da Última Demanda, etc. {{ehmmedText}}</p>
+    <div class="qdm-opt-places">
+      {{#each places}}
+      <div class="qdm-opt-place">
+        <strong>{{label}}</strong>
+        {{#each residents}}
+        <label class="qdm-check"><input type="checkbox" data-resident="{{name}}" {{#if out}}checked{{/if}}> {{name}}</label>
+        {{/each}}
+      </div>
+      {{/each}}
+    </div>
+  </div>
+  <footer class="qdm-opt-footer">
+    <button type="submit" class="qdm-btn qdm-btn-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar</button>
+  </footer>
+</div>

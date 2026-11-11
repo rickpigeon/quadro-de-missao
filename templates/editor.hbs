@@ -1,0 +1,74 @@
+<div class="qdm-ed">
+  <div class="qdm-ed-fields">
+    <label class="qdm-field">Título
+      <input type="text" name="title" value="{{poster.title}}" maxlength="120">
+    </label>
+    <label class="qdm-field">Texto do cartaz <span class="qdm-hint">(linha em branco separa os parágrafos)</span>
+      <textarea name="body" rows="9">{{poster.body}}</textarea>
+    </label>
+    <label class="qdm-field">Assinatura
+      <input type="text" name="signature" value="{{poster.signature}}" maxlength="120">
+    </label>
+
+    <div class="qdm-grid-2">
+      <label class="qdm-field">Solicitante
+        <select name="estab">{{#each estabs}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+      </label>
+      <label class="qdm-field">Morador
+        <input type="text" name="npc" value="{{poster.npc}}" list="qdm-residents-{{poster.id}}" maxlength="80">
+        <datalist id="qdm-residents-{{poster.id}}">{{#each residents}}<option value="{{this}}"></option>{{/each}}</datalist>
+      </label>
+      <label class="qdm-field">Objetivo
+        <select name="objective">{{#each objectives}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+      </label>
+      <label class="qdm-field">Recompensa
+        <select name="reward">{{#each rewards}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+      </label>
+      <label class="qdm-field">Masmorra
+        <select name="dungeon">{{#each dungeons}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+      </label>
+      <label class="qdm-field">Câmara
+        <input type="text" name="chamber" value="{{poster.chamber}}" maxlength="12" placeholder="vazio = sem câmara">
+      </label>
+    </div>
+
+    <button type="button" class="qdm-btn qdm-btn-wide" data-action="regenerate"><i class="fa-solid fa-feather-pointed"></i> Gerar texto de novo com essas escolhas</button>
+
+    <label class="qdm-field">Termos <span class="qdm-hint">(um por linha)</span>
+      <textarea name="terms" rows="4">{{termsText}}</textarea>
+    </label>
+    <label class="qdm-field">Recompensa (texto)
+      <textarea name="rewardText" rows="3">{{poster.rewardText}}</textarea>
+    </label>
+    <label class="qdm-field">Notas do mestre <span class="qdm-hint">(um por linha; os jogadores não veem)</span>
+      <textarea name="gmNotes" rows="5">{{notesText}}</textarea>
+    </label>
+
+    <div class="qdm-grid-2">
+      <label class="qdm-field">Situação
+        <select name="status">{{#each statuses}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+      </label>
+      <label class="qdm-field">Aceita por
+        <input type="text" name="acceptedBy" value="{{poster.acceptedBy}}" list="qdm-party-{{poster.id}}" maxlength="80">
+        <datalist id="qdm-party-{{poster.id}}"><option value="O grupo"></option>{{#each party}}<option value="{{this}}"></option>{{/each}}</datalist>
+      </label>
+      <label class="qdm-field">Alfinete
+        <select name="pin">{{#each pins}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+      </label>
+      <label class="qdm-field">Inclinação <span class="qdm-hint" data-tilt-label>{{tiltLabel}}</span>
+        <input type="range" name="tilt" min="-4" max="4" step="0.1" value="{{poster.tilt}}">
+      </label>
+    </div>
+    <label class="qdm-check">
+      <input type="checkbox" name="visible" {{#if poster.visible}}checked{{/if}}>
+      <span>Visível para os jogadores <span class="qdm-hint">Desmarcado = rascunho, só você vê.</span></span>
+    </label>
+  </div>
+
+  <div class="qdm-ed-side">
+    <div class="qdm-ed-preview qdm-cork"></div>
+    <footer class="qdm-ed-footer">
+      <button type="submit" class="qdm-btn qdm-btn-primary"><i class="fa-solid fa-floppy-disk"></i> {{#if isNew}}Salvar no quadro{{else}}Salvar{{/if}}</button>
+    </footer>
+  </div>
+</div>

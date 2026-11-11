@@ -1,0 +1,93 @@
+<section class="qdm-gen">
+  <div class="qdm-gen-controls">
+    <p class="qdm-gen-intro">Cada missão tem um <strong>solicitante</strong>, um <strong>objetivo</strong> e uma <strong>recompensa</strong> (p. 33). Role cada tabela ou escolha à mão; o texto do cartaz acompanha.</p>
+
+    <button type="button" class="qdm-btn qdm-btn-primary qdm-btn-wide" data-action="rollAll"><i class="fa-solid fa-dice"></i> Rolar tudo</button>
+
+    <fieldset>
+      <legend><i class="fa-solid fa-dungeon"></i> Masmorra</legend>
+      <select data-field="dungeon">
+        {{#each dungeons}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+      </select>
+      <p class="qdm-hint">{{#if isNext}}É a próxima masmorra do grupo.{{else}}Atenção: não é a próxima masmorra marcada no quadro.{{/if}}</p>
+    </fieldset>
+
+    <fieldset>
+      <legend><i class="fa-solid fa-house-flag"></i> Solicitante <span class="qdm-dice">{{reqDice}}</span></legend>
+      <div class="qdm-row">
+        <select data-field="estab">
+          {{#each estabs}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+        </select>
+        <button type="button" class="qdm-btn qdm-btn-die" data-action="rollRequester" title="Rolar 2d8"><i class="fa-solid fa-dice"></i> 2d8</button>
+      </div>
+      <div class="qdm-row">
+        <select data-field="npc" title="Morador que assina o cartaz">
+          {{#each npcs}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+          {{#unless npcs.length}}<option value="{{npcFallback}}" selected>{{npcFallback}}</option>{{/unless}}
+        </select>
+        <button type="button" class="qdm-btn qdm-btn-die" data-action="rollNpc" title="Sortear outro morador"><i class="fa-solid fa-shuffle"></i></button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><i class="fa-solid fa-bullseye"></i> Objetivo <span class="qdm-dice">{{objDice}}</span></legend>
+      <div class="qdm-row">
+        <select data-field="objective">
+          {{#each objectives}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+        </select>
+        <button type="button" class="qdm-btn qdm-btn-die" data-action="rollObjective" title="Rolar 1d8"><i class="fa-solid fa-dice"></i> 1d8</button>
+      </div>
+
+      {{#if needsChamber}}
+      <div class="qdm-sub"><span class="qdm-sub-label">Câmara numerada</span>
+        <div class="qdm-row">
+          <input type="text" data-field="chamber" value="{{draft.chamber}}" placeholder="nº no mapa">
+          <button type="button" class="qdm-btn qdm-btn-die" data-action="rollChamber" title="Sortear câmara"><i class="fa-solid fa-dice"></i></button>
+        </div>
+        <span class="qdm-hint">{{#if areaName}}Área {{draft.chamber}}: “{{areaName}}”. {{/if}}{{chamberHint}}.</span>
+      </div>
+      {{/if}}
+
+      {{#if needsSpaces}}
+      <div class="qdm-sub"><span class="qdm-sub-label">{{spacesLabel}}</span>
+        <div class="qdm-row">
+          <input type="number" min="0" max="99" data-field="spaces" value="{{draft.spaces}}">
+          <button type="button" class="qdm-btn qdm-btn-die" data-action="rollSpaces" title="Rolar {{spacesFormula}}"><i class="fa-solid fa-dice"></i> {{spacesFormula}}</button>
+        </div>
+        {{#if spacesDice}}<span class="qdm-hint">{{spacesDice}}</span>{{/if}}
+      </div>
+      {{/if}}
+
+      {{#if isHunt}}
+      <div class="qdm-sub"><span class="qdm-sub-label">Presa (tabela de encontros da masmorra)</span>
+        <div class="qdm-row">
+          <input type="text" data-field="prey" value="{{prey}}" placeholder="{{#if noTable}}esta masmorra não tem tabela: escreva a presa{{else}}role ou escreva{{/if}}">
+          <button type="button" class="qdm-btn qdm-btn-die" data-action="rollPrey" title="Rolar na tabela de encontros"><i class="fa-solid fa-dice"></i></button>
+        </div>
+        <span class="qdm-hint">{{#if preyLog}}{{preyLog}}{{#if preyRef}} · {{preyRef}}{{/if}}. {{/if}}A presa recebe +2 em perícias e na Defesa.</span>
+      </div>
+      {{/if}}
+    </fieldset>
+
+    <fieldset>
+      <legend><i class="fa-solid fa-coins"></i> Recompensa <span class="qdm-dice">{{rewDice}}</span></legend>
+      <div class="qdm-row">
+        <select data-field="reward">
+          {{#each rewards}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+        </select>
+        <button type="button" class="qdm-btn qdm-btn-die" data-action="rollReward" title="Rolar 1d6"><i class="fa-solid fa-dice"></i> 1d6</button>
+      </div>
+    </fieldset>
+
+    <button type="button" class="qdm-btn qdm-btn-wide" data-action="newText"><i class="fa-solid fa-feather-pointed"></i> Outro texto (mesma missão)</button>
+  </div>
+
+  <div class="qdm-gen-side">
+    <div class="qdm-gen-preview qdm-cork">{{{preview}}}</div>
+    <footer class="qdm-gen-footer">
+      <button type="button" class="qdm-btn qdm-btn-primary" data-action="post"><i class="fa-solid fa-thumbtack"></i> Afixar no quadro</button>
+      <button type="button" class="qdm-btn" data-action="saveDraft" title="Fica no quadro só para você até decidir mostrar"><i class="fa-solid fa-eye-slash"></i> Guardar como rascunho</button>
+      <button type="button" class="qdm-btn" data-action="openEditor"><i class="fa-solid fa-pen"></i> Editar antes</button>
+    </footer>
+  </div>
+</section>

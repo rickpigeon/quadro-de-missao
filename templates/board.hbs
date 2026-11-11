@@ -1,0 +1,81 @@
+<section class="qdm-board">
+  <header class="qdm-toolbar">
+    {{#if gm}}
+    <button type="button" class="qdm-btn qdm-btn-primary" data-action="generate"><i class="fa-solid fa-dice"></i> Gerar missão</button>
+    <button type="button" class="qdm-btn" data-action="newPoster" title="Criar um cartaz em branco e escrever à mão"><i class="fa-solid fa-file-circle-plus"></i> Em branco</button>
+    <label class="qdm-next" title="A masmorra que as missões novas usam">
+      <span>Próxima:</span>
+      <select name="nextDungeon">
+        {{#each dungeons}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+      </select>
+    </label>
+    {{/if}}
+    <nav class="qdm-filters">
+      {{#each filters}}
+      <button type="button" data-action="setFilter" data-filter="{{key}}" class="{{#if active}}is-active{{/if}}" title="{{title}}">{{label}} <span class="qdm-count">{{count}}</span></button>
+      {{/each}}
+    </nav>
+    <span class="qdm-spacer"></span>
+    <span class="qdm-limit {{#if overLimit}}is-over{{/if}}" title="O grupo pode ter tantas missões aceitas quanto personagens jogadores (p. 33)">
+      <i class="fa-solid fa-thumbtack"></i> Aceitas: {{limitText}}
+    </span>
+    {{#if gm}}
+    {{#if drafts}}<span class="qdm-drafts" title="Cartazes que os jogadores ainda não veem"><i class="fa-solid fa-eye-slash"></i> {{drafts}}</span>{{/if}}
+    <button type="button" class="qdm-btn qdm-btn-icon" data-action="showBoard" title="Abrir o quadro na tela de todos os jogadores"><i class="fa-solid fa-users"></i></button>
+    <button type="button" class="qdm-btn qdm-btn-icon" data-action="options" title="Opções do quadro"><i class="fa-solid fa-gear"></i></button>
+    {{/if}}
+  </header>
+
+  <div class="qdm-cork">
+    {{#if hasTiles}}
+    <ol class="qdm-grid">
+      {{#each tiles}}
+      <li class="qdm-tile" data-poster-id="{{id}}">
+        <div class="qdm-tile-click" data-action="focus" role="button" tabindex="0" title="Ler o cartaz">{{{html}}}</div>
+        {{#if ../gm}}
+        <div class="qdm-tile-tools">
+          <button type="button" data-action="edit" title="Editar"><i class="fa-solid fa-pen"></i></button>
+          <button type="button" data-action="toggleVisible" title="{{#if visible}}Esconder dos jogadores{{else}}Mostrar aos jogadores{{/if}}"><i class="fa-solid {{#if visible}}fa-eye{{else}}fa-eye-slash{{/if}}"></i></button>
+          <button type="button" data-action="announce" title="Anunciar no chat"><i class="fa-solid fa-bullhorn"></i></button>
+          <button type="button" class="qdm-del" data-action="remove" title="Excluir"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ol>
+    {{else}}
+    <div class="qdm-empty">
+      <i class="fa-solid fa-thumbtack"></i>
+      <p>{{emptyText}}</p>
+    </div>
+    {{/if}}
+  </div>
+
+  {{#if focus}}
+  <div class="qdm-focus-backdrop">
+    <div class="qdm-focus" data-poster-id="{{focus.id}}">
+      <div class="qdm-focus-paper">{{{focus.html}}}</div>
+      <div class="qdm-focus-actions">
+        {{#if gm}}
+        <button type="button" class="qdm-btn" data-action="edit"><i class="fa-solid fa-pen"></i> Editar</button>
+        {{#if focus.isOpen}}<button type="button" class="qdm-btn" data-action="accept"><i class="fa-solid fa-thumbtack"></i> Aceitar…</button>{{/if}}
+        {{#if focus.isAccepted}}
+        <button type="button" class="qdm-btn qdm-btn-good" data-action="complete"><i class="fa-solid fa-circle-check"></i> Cumprida…</button>
+        <button type="button" class="qdm-btn qdm-btn-bad" data-action="fail"><i class="fa-solid fa-circle-xmark"></i> Fracassou…</button>
+        {{/if}}
+        {{#unless focus.isOpen}}<button type="button" class="qdm-btn" data-action="reopen" title="Voltar a ficar disponível"><i class="fa-solid fa-rotate-left"></i> Reabrir</button>{{/unless}}
+        <button type="button" class="qdm-btn" data-action="toggleVisible">
+          {{#if focus.visible}}<i class="fa-solid fa-eye-slash"></i> Esconder dos jogadores{{else}}<i class="fa-solid fa-eye"></i> Mostrar aos jogadores{{/if}}
+        </button>
+        <button type="button" class="qdm-btn" data-action="showPoster" title="Abrir este cartaz na tela de todos"><i class="fa-solid fa-users"></i> Mostrar para todos</button>
+        <button type="button" class="qdm-btn" data-action="announce"><i class="fa-solid fa-bullhorn"></i> Chat</button>
+        <button type="button" class="qdm-btn" data-action="duplicate" title="Duplicar como rascunho"><i class="fa-solid fa-copy"></i></button>
+        <button type="button" class="qdm-btn qdm-btn-bad" data-action="remove" title="Excluir"><i class="fa-solid fa-trash"></i></button>
+        {{/if}}
+        <span class="qdm-spacer"></span>
+        <button type="button" class="qdm-btn qdm-btn-primary" data-action="closeFocus"><i class="fa-solid fa-xmark"></i> Fechar</button>
+      </div>
+    </div>
+  </div>
+  {{/if}}
+</section>

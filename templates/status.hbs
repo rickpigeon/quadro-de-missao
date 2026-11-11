@@ -1,0 +1,37 @@
+<div class="qdm-status">
+  <p class="qdm-status-head"><i class="{{icon}}"></i> <strong>{{poster.title}}</strong><br>
+    <span class="qdm-hint">{{objectiveLabel}} · {{rewardLabel}}</span></p>
+
+  {{#if isAccept}}
+  <label class="qdm-field">Quem aceitou
+    <input type="text" name="who" value="{{who}}" list="qdm-who-{{poster.id}}" placeholder="O grupo" maxlength="80" autofocus>
+    <datalist id="qdm-who-{{poster.id}}"><option value="O grupo"></option>{{#each party}}<option value="{{this}}"></option>{{/each}}</datalist>
+  </label>
+  {{#if limitText}}
+  <p class="qdm-hint {{#if overLimit}}qdm-warn{{/if}}">Com esta, o grupo fica com {{limitText}} missões aceitas.{{#if overLimit}} Passa do limite de uma por personagem jogador (p. 33).{{/if}}</p>
+  {{/if}}
+  <p class="qdm-hint">Aceitar, entregar ou desistir de missões só pode ser feito na Guilda (p. 33).</p>
+  <label class="qdm-check"><input type="checkbox" name="announce"> Anunciar no chat</label>
+  {{/if}}
+
+  {{#if isComplete}}
+  <label class="qdm-field">Quem cumpriu
+    <input type="text" name="who" value="{{who}}" list="qdm-who-{{poster.id}}" placeholder="O grupo" maxlength="80">
+    <datalist id="qdm-who-{{poster.id}}"><option value="O grupo"></option>{{#each party}}<option value="{{this}}"></option>{{/each}}</datalist>
+  </label>
+  <label class="qdm-check"><input type="checkbox" name="guildHonor"> Honraria da Guilda: uma recompensa adicional (1d6 na coluna Recompensa, p. 31)</label>
+  <label class="qdm-check"><input type="checkbox" name="myssia"> Myssia (Leal): o mestre rola duas recompensas e o grupo escolhe uma delas (p. 41)</label>
+  <label class="qdm-check"><input type="checkbox" name="announce" checked> Anunciar no chat (com as rolagens)</label>
+  {{/if}}
+
+  {{#if isFail}}
+  {{#if isEscort}}
+  <label class="qdm-check"><input type="checkbox" name="npcOut" {{#if npcOut}}checked disabled{{/if}}> {{npc}} morreu: marcar como fora de jogo (p. 33)</label>
+  {{/if}}
+  <label class="qdm-check"><input type="checkbox" name="announce"> Anunciar no chat</label>
+  {{/if}}
+
+  <footer class="qdm-status-footer">
+    <button type="submit" class="qdm-btn qdm-btn-primary"><i class="{{icon}}"></i> {{button}}</button>
+  </footer>
+</div>

@@ -1,0 +1,482 @@
+/* Quadro de Missão — cork board, paper posters and the GM windows. */
+
+.quadro-de-missao {
+  --qdm-cork: #9c6b3f;
+  --qdm-cork-dark: #6f4626;
+  --qdm-paper: #f4e8cc;
+  --qdm-paper-edge: #e2cfa4;
+  --qdm-ink: #34261a;
+  --qdm-ink-soft: #6b5640;
+  --qdm-accent: #6b3fa0;
+  --qdm-good: #2f6f3a;
+  --qdm-bad: #a3302a;
+  --qdm-blue: #2c5a96;
+  --qdm-head-font: "Modesto Condensed", "Signika", Georgia, serif;
+  --qdm-body-font: "Signika", "Segoe UI", Arial, sans-serif;
+}
+
+.quadro-de-missao [hidden] { display: none !important; }
+
+/* ---------------------------------------------------------------- */
+/*  Cork                                                            */
+/* ---------------------------------------------------------------- */
+
+.quadro-de-missao .qdm-cork {
+  background-color: var(--qdm-cork);
+  background-image:
+    radial-gradient(rgba(60, 35, 15, 0.35) 1px, transparent 1.6px),
+    radial-gradient(rgba(255, 225, 180, 0.18) 1px, transparent 1.8px),
+    radial-gradient(ellipse at 30% 20%, rgba(255, 220, 170, 0.18), transparent 60%),
+    radial-gradient(ellipse at 80% 90%, rgba(40, 20, 5, 0.35), transparent 65%);
+  background-size: 7px 7px, 11px 11px, 100% 100%, 100% 100%;
+  background-position: 0 0, 3px 5px, 0 0, 0 0;
+}
+
+.application.qdm-board-app .window-content,
+.application.qdm-generator-app .window-content,
+.application.qdm-editor-app .window-content { padding: 0; overflow: hidden; }
+
+/* ---------------------------------------------------------------- */
+/*  Buttons                                                         */
+/* ---------------------------------------------------------------- */
+
+.quadro-de-missao .qdm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: auto;
+  min-height: 30px;
+  padding: 0.25rem 0.7rem;
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  border-radius: 6px;
+  background: #efe3c6;
+  color: var(--qdm-ink);
+  font-family: var(--qdm-body-font);
+  font-size: 0.85rem;
+  line-height: 1.1;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+.quadro-de-missao .qdm-btn:hover { background: #fff3d6; }
+.quadro-de-missao .qdm-btn:focus-visible { outline: 2px solid var(--qdm-accent); outline-offset: 1px; }
+.quadro-de-missao .qdm-btn-primary { background: var(--qdm-accent); border-color: #4a2a72; color: #fff; }
+.quadro-de-missao .qdm-btn-primary:hover { background: #7d52b6; }
+.quadro-de-missao .qdm-btn-good { background: #d9ecd6; border-color: var(--qdm-good); color: #1d4a25; }
+.quadro-de-missao .qdm-btn-bad { background: #f3d9d5; border-color: var(--qdm-bad); color: #6d1d18; }
+.quadro-de-missao .qdm-btn-icon { width: 32px; padding: 0; }
+.quadro-de-missao .qdm-btn-wide { width: 100%; }
+.quadro-de-missao .qdm-btn-die { flex: 0 0 auto; min-width: 40px; }
+.quadro-de-missao .qdm-spacer { flex: 1 1 auto; }
+/* Hints sit on Foundry's own window background (light or dark theme), so they only fade. */
+.quadro-de-missao .qdm-hint { font-size: 0.78rem; opacity: 0.75; font-weight: normal; }
+.quadro-de-missao .qdm-warn { color: var(--qdm-bad); font-weight: bold; }
+
+/* ---------------------------------------------------------------- */
+/*  Board                                                           */
+/* ---------------------------------------------------------------- */
+
+.qdm-board {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-family: var(--qdm-body-font);
+  color: var(--qdm-ink);
+}
+
+.qdm-board .qdm-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.75rem;
+  background: linear-gradient(#5a3a22, #4a2f1b);
+  border-bottom: 3px solid #2e1d10;
+  color: #f4e8cc;
+}
+
+.qdm-board .qdm-next { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; }
+.qdm-board .qdm-next select { width: auto; max-width: 150px; height: 28px; }
+
+.qdm-board .qdm-filters { display: inline-flex; gap: 2px; margin-left: 0.25rem; }
+.qdm-board .qdm-filters button {
+  width: auto;
+  min-height: 28px;
+  padding: 0.15rem 0.6rem;
+  border: 1px solid rgba(255, 235, 200, 0.35);
+  border-radius: 14px;
+  background: transparent;
+  color: #f4e8cc;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.qdm-board .qdm-filters button.is-active { background: #f4e8cc; color: var(--qdm-ink); }
+.qdm-board .qdm-count { opacity: 0.7; font-size: 0.75rem; }
+
+.qdm-board .qdm-limit,
+.qdm-board .qdm-drafts { font-size: 0.82rem; white-space: nowrap; }
+.qdm-board .qdm-limit.is-over { color: #ffb4a8; font-weight: bold; }
+
+.qdm-board .qdm-cork {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 1.6rem 1.4rem 2rem;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.45);
+}
+
+.qdm-board .qdm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: 2rem 1.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.qdm-board .qdm-tile { position: relative; margin: 0; padding: 0; }
+.qdm-board .qdm-tile-click { cursor: pointer; outline: none; }
+.qdm-board .qdm-tile-click:focus-visible .qdm-poster { outline: 3px solid var(--qdm-accent); }
+
+.qdm-board .qdm-tile-tools {
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 8px;
+  background: rgba(40, 25, 12, 0.92);
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 3;
+}
+.qdm-board .qdm-tile:hover .qdm-tile-tools,
+.qdm-board .qdm-tile:focus-within .qdm-tile-tools { opacity: 1; }
+.qdm-board .qdm-tile-tools button {
+  width: 30px;
+  height: 26px;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #f4e8cc;
+  cursor: pointer;
+}
+.qdm-board .qdm-tile-tools button:hover { background: rgba(255, 255, 255, 0.15); }
+.qdm-board .qdm-tile-tools .qdm-del:hover { background: var(--qdm-bad); }
+
+.qdm-board .qdm-empty {
+  margin: 4rem auto;
+  max-width: 420px;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background: rgba(244, 232, 204, 0.92);
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+.qdm-board .qdm-empty i { font-size: 2rem; color: var(--qdm-bad); }
+
+/* Enlarged poster */
+.qdm-board .qdm-focus-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+  padding: 1.5rem 1rem;
+  background: rgba(20, 12, 5, 0.72);
+}
+.qdm-board .qdm-focus { width: min(640px, 100%); }
+.qdm-board .qdm-focus .qdm-poster { --qdm-tilt: 0deg !important; }
+.qdm-board .qdm-focus-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.9rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background: rgba(244, 232, 204, 0.95);
+}
+
+/* ---------------------------------------------------------------- */
+/*  Poster                                                          */
+/* ---------------------------------------------------------------- */
+
+.quadro-de-missao .qdm-poster {
+  position: relative;
+  padding: 1.35rem 1rem 0.9rem;
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(255, 255, 255, 0.55), transparent 55%),
+    radial-gradient(ellipse at 90% 95%, rgba(150, 110, 50, 0.22), transparent 60%),
+    linear-gradient(var(--qdm-paper), var(--qdm-paper));
+  border: 1px solid var(--qdm-paper-edge);
+  border-radius: 2px;
+  color: var(--qdm-ink);
+  font-family: var(--qdm-body-font);
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.3);
+  transform: rotate(var(--qdm-tilt, 0deg));
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.qdm-board .qdm-tile:hover .qdm-poster { transform: rotate(0deg) translateY(-3px); box-shadow: 0 14px 22px rgba(0, 0, 0, 0.45); }
+
+.quadro-de-missao .qdm-pin {
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.85), var(--qdm-pin, #b8322a) 45%, rgba(0, 0, 0, 0.55) 100%);
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.45);
+  z-index: 2;
+}
+
+.quadro-de-missao .qdm-poster-head { display: grid; grid-template-columns: auto 1fr; gap: 0 0.5rem; align-items: center; }
+.quadro-de-missao .qdm-seal {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 2px solid var(--qdm-accent);
+  border-radius: 50%;
+  color: var(--qdm-accent);
+  font-size: 0.95rem;
+  background: rgba(107, 63, 160, 0.08);
+}
+.quadro-de-missao .qdm-kind {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--qdm-ink-soft);
+}
+.quadro-de-missao .qdm-title {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-family: var(--qdm-head-font);
+  font-size: 1.35rem;
+  line-height: 1.05;
+  color: #2a1a0e;
+}
+
+.quadro-de-missao .qdm-excerpt {
+  margin: 0.55rem 0 0.45rem;
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+.quadro-de-missao .qdm-line { margin: 0.15rem 0; font-size: 0.76rem; color: var(--qdm-ink-soft); }
+.quadro-de-missao .qdm-line i { width: 1rem; text-align: center; color: var(--qdm-accent); }
+.quadro-de-missao .qdm-line-reward { color: var(--qdm-ink); font-weight: bold; }
+
+.quadro-de-missao .qdm-body { margin: 0.75rem 0 0.5rem; font-size: 0.92rem; line-height: 1.45; }
+.quadro-de-missao .qdm-body p { margin: 0 0 0.6rem; }
+.quadro-de-missao .qdm-body p:first-child { font-style: italic; color: var(--qdm-ink-soft); }
+
+.quadro-de-missao .qdm-facts {
+  margin: 0.6rem 0 0.4rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px dashed rgba(52, 38, 26, 0.35);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.28);
+  font-size: 0.82rem;
+}
+.quadro-de-missao .qdm-fact { display: grid; grid-template-columns: 6.2rem 1fr; gap: 0.4rem; margin: 0.15rem 0; }
+.quadro-de-missao .qdm-fact dt { margin: 0; font-weight: bold; text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.06em; color: var(--qdm-ink-soft); padding-top: 0.15rem; }
+.quadro-de-missao .qdm-fact dd { margin: 0; }
+.quadro-de-missao .qdm-fact ul { margin: 0; padding-left: 1rem; }
+.quadro-de-missao .qdm-fact-reward dd { font-weight: bold; }
+.quadro-de-missao .qdm-fact-reward i { color: var(--qdm-accent); }
+
+.quadro-de-missao .qdm-sign {
+  margin-top: 0.4rem;
+  text-align: right;
+  font-family: var(--qdm-head-font);
+  font-size: 1rem;
+  color: var(--qdm-ink-soft);
+}
+.quadro-de-missao .qdm-sign::before { content: "— "; }
+.quadro-de-missao .qdm-mode-tile .qdm-sign { font-size: 0.85rem; }
+
+.quadro-de-missao .qdm-stamp {
+  position: absolute;
+  top: 2.4rem;
+  right: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border: 3px double currentColor;
+  border-radius: 4px;
+  font-family: var(--qdm-head-font);
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transform: rotate(-12deg);
+  opacity: 0.82;
+  pointer-events: none;
+  background: rgba(244, 232, 204, 0.55);
+}
+.quadro-de-missao .qdm-stamp small { font-family: var(--qdm-body-font); font-size: 0.62rem; letter-spacing: 0; text-transform: none; }
+.quadro-de-missao .qdm-stamp-aceita { color: var(--qdm-blue); }
+.quadro-de-missao .qdm-stamp-cumprida { color: var(--qdm-good); }
+.quadro-de-missao .qdm-stamp-fracassou { color: var(--qdm-bad); }
+.quadro-de-missao .qdm-mode-full .qdm-stamp { font-size: 1.6rem; top: 3rem; right: 1rem; }
+.quadro-de-missao .qdm-mode-tile .qdm-stamp { top: 42%; right: 0.35rem; font-size: 1rem; }
+.quadro-de-missao .qdm-mode-tile .qdm-title { font-size: 1.12rem; }
+.quadro-de-missao .qdm-mode-tile .qdm-seal { width: 30px; height: 30px; font-size: 0.85rem; }
+.quadro-de-missao .qdm-status-cumprida,
+.quadro-de-missao .qdm-status-fracassou { filter: saturate(0.6); }
+
+.quadro-de-missao .qdm-poster.is-draft { opacity: 0.78; outline: 2px dashed rgba(52, 38, 26, 0.55); outline-offset: 3px; }
+.quadro-de-missao .qdm-draft-ribbon {
+  position: absolute;
+  top: 8px;
+  left: -6px;
+  padding: 0.1rem 0.5rem;
+  background: #3b3b3b;
+  color: #fff;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
+}
+
+.quadro-de-missao .qdm-gm-notes {
+  margin-top: 0.7rem;
+  padding: 0.45rem 0.6rem;
+  border-left: 4px solid var(--qdm-accent);
+  background: rgba(107, 63, 160, 0.09);
+  font-size: 0.8rem;
+}
+.quadro-de-missao .qdm-gm-notes summary { cursor: pointer; font-weight: bold; color: var(--qdm-accent); }
+.quadro-de-missao .qdm-gm-notes ul { margin: 0.35rem 0 0; padding-left: 1.1rem; }
+.quadro-de-missao .qdm-gm-notes li { margin: 0.15rem 0; }
+
+/* ---------------------------------------------------------------- */
+/*  Generator and editor                                            */
+/* ---------------------------------------------------------------- */
+
+.qdm-gen,
+.qdm-ed {
+  display: grid;
+  grid-template-columns: minmax(330px, 400px) 1fr;
+  height: 100%;
+  font-family: var(--qdm-body-font);
+}
+
+.qdm-gen-controls,
+.qdm-ed-fields {
+  overflow-y: auto;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.qdm-gen-intro { margin: 0; font-size: 0.85rem; }
+
+.qdm-gen fieldset {
+  margin: 0;
+  padding: 0.5rem 0.6rem 0.6rem;
+  border: 1px solid rgba(128, 128, 128, 0.45);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.qdm-gen legend { padding: 0 0.3rem; font-weight: bold; }
+.qdm-gen .qdm-dice {
+  margin-left: 0.3rem;
+  padding: 0 0.4rem;
+  border-radius: 10px;
+  background: rgba(107, 63, 160, 0.18);
+  font-weight: normal;
+  font-size: 0.75rem;
+}
+.qdm-gen .qdm-row,
+.qdm-ed .qdm-row { display: flex; gap: 0.35rem; align-items: center; }
+.qdm-gen .qdm-row select,
+.qdm-gen .qdm-row input { flex: 1 1 auto; min-width: 0; }
+.qdm-gen .qdm-sub { display: flex; flex-direction: column; gap: 0.2rem; margin-top: 0.2rem; }
+.qdm-gen .qdm-sub-label { font-size: 0.82rem; font-weight: bold; }
+
+.qdm-gen-side,
+.qdm-ed-side { display: flex; flex-direction: column; min-height: 0; }
+.qdm-gen-preview,
+.qdm-ed-preview { flex: 1 1 auto; overflow-y: auto; padding: 1.6rem 1.4rem; box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.4); }
+.qdm-gen-preview .qdm-poster,
+.qdm-ed-preview .qdm-poster { max-width: 600px; margin: 0 auto; }
+.qdm-gen-footer,
+.qdm-ed-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: flex-end;
+  padding: 0.55rem 0.75rem;
+  border-top: 1px solid rgba(128, 128, 128, 0.4);
+}
+
+.quadro-de-missao .qdm-field { display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.85rem; font-weight: bold; }
+.quadro-de-missao .qdm-field input,
+.quadro-de-missao .qdm-field select,
+.quadro-de-missao .qdm-field textarea { font-weight: normal; }
+.quadro-de-missao .qdm-field input:not([type=checkbox]):not([type=range]),
+.quadro-de-missao .qdm-field select,
+.quadro-de-missao .qdm-field textarea { width: 100%; max-width: 100%; box-sizing: border-box; }
+.quadro-de-missao .qdm-field input[type=range] { width: 100%; }
+.quadro-de-missao .qdm-field textarea { resize: vertical; min-height: 3rem; font-family: var(--qdm-body-font); }
+.quadro-de-missao .qdm-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 0.7rem; }
+.quadro-de-missao .qdm-check { display: flex; align-items: flex-start; gap: 0.4rem; font-size: 0.85rem; }
+.quadro-de-missao .qdm-check input { flex: 0 0 auto; margin-top: 0.15rem; }
+.quadro-de-missao .qdm-check > span { display: flex; flex-direction: column; gap: 0.1rem; }
+
+/* ---------------------------------------------------------------- */
+/*  Status and options                                              */
+/* ---------------------------------------------------------------- */
+
+.qdm-status,
+.qdm-opt { display: flex; flex-direction: column; gap: 0.6rem; font-family: var(--qdm-body-font); }
+.qdm-status-head { margin: 0; font-size: 1rem; }
+.qdm-status-footer,
+.qdm-opt-footer { display: flex; justify-content: flex-end; padding-top: 0.4rem; }
+.qdm-opt { height: 100%; }
+.qdm-opt-scroll { flex: 1 1 auto; overflow-y: auto; display: flex; flex-direction: column; gap: 0.7rem; padding-right: 0.3rem; }
+.qdm-opt-title { margin: 0.4rem 0 0; font-size: 1rem; }
+.qdm-opt-places { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 0.5rem; }
+.qdm-opt-place { padding: 0.4rem 0.5rem; border: 1px solid rgba(128, 128, 128, 0.4); border-radius: 6px; }
+.qdm-opt-place strong { display: block; margin-bottom: 0.2rem; font-size: 0.85rem; }
+
+/* ---------------------------------------------------------------- */
+/*  Chat                                                            */
+/* ---------------------------------------------------------------- */
+
+.quadro-de-missao.qdm-chat {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--qdm-paper-edge);
+  border-left: 4px solid var(--qdm-accent);
+  border-radius: 4px;
+  background: var(--qdm-paper);
+  color: var(--qdm-ink);
+  font-family: var(--qdm-body-font);
+}
+.quadro-de-missao.qdm-chat.is-done { border-left-color: var(--qdm-good); }
+.quadro-de-missao.qdm-chat.is-failed { border-left-color: var(--qdm-bad); }
+.quadro-de-missao .qdm-chat-head { display: grid; grid-template-columns: auto 1fr; gap: 0 0.45rem; align-items: center; margin-bottom: 0.35rem; }
+.quadro-de-missao .qdm-chat-seal { grid-row: span 2; display: grid; place-items: center; width: 28px; height: 28px; border: 2px solid var(--qdm-accent); border-radius: 50%; color: var(--qdm-accent); }
+.quadro-de-missao .qdm-chat-kicker { font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--qdm-ink-soft); }
+.quadro-de-missao .qdm-chat-title { font-family: var(--qdm-head-font); font-size: 1.15rem; line-height: 1.05; }
+.quadro-de-missao .qdm-chat-line { margin: 0.2rem 0; font-size: 0.85rem; }
+.quadro-de-missao .qdm-chat-line i { width: 1rem; text-align: center; color: var(--qdm-accent); }
+.quadro-de-missao .qdm-chat-sign { margin: 0.3rem 0 0; text-align: right; font-family: var(--qdm-head-font); color: var(--qdm-ink-soft); }
+.quadro-de-missao .qdm-chat-hint { margin: 0.3rem 0 0; font-size: 0.72rem; color: var(--qdm-ink-soft); }
+.quadro-de-missao .qdm-chat-rewards { margin: 0.3rem 0; padding-left: 1.1rem; font-size: 0.82rem; }
+.quadro-de-missao .qdm-chat-rewards li { margin: 0.25rem 0; }
+.quadro-de-missao .qdm-chat-roll { padding: 0 0.3rem; border-radius: 4px; background: rgba(107, 63, 160, 0.15); font-weight: bold; }
